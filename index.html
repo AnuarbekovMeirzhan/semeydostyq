@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dostyq — подготовка к ЕНТ, НИШ, БИЛ в Семее</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header id="header" class="site-header">
+    <div class="container site-header__inner">
+      <div class="site-header__logo" data-i18n-alt="header.logoAlt"></div>
+      <button id="lang-toggle" class="lang-toggle" type="button">KK</button>
+      <a id="header-phone" class="site-header__phone" href="tel:+77071911372">+7 707 191 1372</a>
+      <a class="button button--cta" href="#lead-form" data-i18n="header.cta"></a>
+    </div>
+  </header>
+
+  <main>
+    <section id="hero" class="hero">
+      <div class="container">
+        <h1 data-i18n="hero.title"></h1>
+        <p data-i18n="hero.subtitle"></p>
+        <a class="button button--cta" href="#lead-form" data-i18n="hero.cta"></a>
+      </div>
+    </section>
+
+    <section id="courses" class="container">
+      <h2 data-i18n="courses.title"></h2>
+      <div id="courses-list" class="courses-list"></div>
+    </section>
+
+    <section id="stats" class="container">
+      <h2 data-i18n="stats.title"></h2>
+      <div id="stats-list" class="stats-list"></div>
+    </section>
+
+    <section id="advantages" class="container">
+      <h2 data-i18n="advantages.title"></h2>
+      <div id="advantages-list" class="advantages-list"></div>
+    </section>
+
+    <section id="team" class="container">
+      <h2 data-i18n="team.title"></h2>
+      <div id="team-list" class="team-list"></div>
+    </section>
+
+    <section id="gallery" class="container">
+      <h2 data-i18n="gallery.title"></h2>
+      <div id="gallery-list" class="gallery-list"></div>
+    </section>
+
+    <section id="testimonials" class="container">
+      <h2 data-i18n="testimonials.title"></h2>
+      <div id="testimonials-list" class="testimonials-list"></div>
+    </section>
+
+    <section id="prices" class="container">
+      <h2 data-i18n="prices.title"></h2>
+      <div id="prices-list" class="prices-list"></div>
+      <p class="prices-note" data-i18n="prices.note"></p>
+    </section>
+
+    <section id="faq" class="container">
+      <h2 data-i18n="faq.title"></h2>
+      <div id="faq-list" class="faq-list"></div>
+    </section>
+
+    <section id="lead-form" class="container">
+      <h2 data-i18n="form.title"></h2>
+      <form id="lead-form-el" novalidate>
+        <label data-i18n="form.nameLabel" for="lead-name"></label>
+        <input id="lead-name" name="name" type="text" required>
+        <p id="lead-name-error" class="form-error" hidden data-i18n="form.errorName"></p>
+
+        <label data-i18n="form.phoneLabel" for="lead-phone"></label>
+        <input id="lead-phone" name="phone" type="tel" required>
+        <p id="lead-phone-error" class="form-error" hidden data-i18n="form.errorPhone"></p>
+
+        <label data-i18n="form.directionLabel" for="lead-direction"></label>
+        <select id="lead-direction" name="direction"></select>
+
+        <button type="submit" class="button button--cta" data-i18n="form.submit"></button>
+      </form>
+    </section>
+  </main>
+
+  <footer id="footer">
+    <div class="container">
+      <p id="footer-address" data-i18n="footer.address"></p>
+      <a id="footer-phone" href="tel:+77071911372">+7 707 191 1372</a>
+      <a id="footer-instagram" href="https://instagram.com/dostyq.semey" target="_blank" rel="noopener">@dostyq.semey</a>
+      <p id="footer-rights" data-i18n="footer.rights"></p>
+    </div>
+  </footer>
+
+  <a id="whatsapp-float" class="whatsapp-float" href="https://wa.me/77071911372" target="_blank" rel="noopener" aria-label="WhatsApp"></a>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

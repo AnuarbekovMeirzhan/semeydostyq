@@ -1,0 +1,80 @@
+/* ===== PRIMITIVE ===== */
+:root {
+  --color-plum-50:  #F5EEF6;
+  --color-plum-100: #E6D2E9;
+  --color-plum-300: #A65AAE;
+  --color-plum-500: #7A2D82;
+  --color-plum-600: #5B1A5E;
+  --color-plum-700: #45134A;
+  --color-plum-900: #2A0C2E;
+
+  --color-amber-300: #FFCF8A;
+  --color-amber-500: #FFA23C;
+  --color-amber-600: #F5821F;
+
+  --color-cream-50:  #FDFBFA;
+  --color-cream-100: #FAF5F3;
+  --color-gray-500:  #6E6470;
+  --color-gray-800:  #2A2230;
+
+  --space-2: 0.5rem;  --space-3: 0.75rem; --space-4: 1rem;
+  --space-6: 1.5rem;  --space-8: 2rem;    --space-12: 3rem; --space-20: 5rem;
+
+  --font-family-base: 'Manrope', 'Nunito', sans-serif;
+  --font-size-sm: 0.875rem; --font-size-base: 1rem; --font-size-lg: 1.125rem;
+  --font-size-2xl: 1.5rem;  --font-size-4xl: 2.25rem; --font-size-5xl: 3rem;
+
+  --radius-lg: 0.75rem; --radius-2xl: 1.25rem; --radius-full: 9999px;
+  --shadow-md: 0 4px 16px rgb(91 26 94 / 0.10);
+  --shadow-lg: 0 12px 32px rgb(91 26 94 / 0.14);
+}
+
+/* ===== SEMANTIC ===== */
+:root {
+  --color-background: var(--color-cream-50);
+  --color-surface: white;
+  --color-foreground: var(--color-gray-800);
+
+  --color-primary: var(--color-plum-600);
+  --color-primary-hover: var(--color-plum-700);
+  --color-primary-foreground: white;
+
+  --color-accent: var(--color-amber-500);
+  --color-accent-hover: var(--color-amber-600);
+  --color-accent-foreground: var(--color-plum-900);
+
+  --color-muted: var(--color-cream-100);
+  --color-muted-foreground: var(--color-gray-500);
+  --color-border: var(--color-plum-100);
+}
+
+/* ===== COMPONENT ===== */
+:root {
+  --button-cta-bg: var(--color-accent);
+  --button-cta-fg: var(--color-accent-foreground);
+  --button-cta-hover-bg: var(--color-accent-hover);
+  --button-cta-radius: var(--radius-full);
+
+  --card-bg: var(--color-surface);
+  --card-radius: var(--radius-2xl);
+  --card-shadow: var(--shadow-md);
+  --card-padding: var(--space-6);
+}
+
+/* ===== RESET & BASE ===== */
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: var(--font-family-base);
+  color: var(--color-foreground);
+  background: var(--color-background);
+  line-height: 1.5;
+}
+img { max-width: 100%; display: block; }
+.container {
+  width: 100%;
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 0 var(--space-4);
+}
+section { padding: var(--space-12) 0; }
