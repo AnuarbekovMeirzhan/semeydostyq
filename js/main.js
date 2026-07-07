@@ -80,6 +80,7 @@ export async function initApp({ document, fetchImpl, storage, navigate }) {
     const data = await loadContent(nextLang, fetchImpl);
     renderSections(document, data);
     storage.setItem(LANG_STORAGE_KEY, nextLang);
+    document.documentElement.lang = nextLang;
     const toggle = document.getElementById('lang-toggle');
     if (toggle) toggle.textContent = nextLang === 'ru' ? 'KK' : 'RU';
   }
