@@ -78,3 +78,135 @@ img { max-width: 100%; display: block; }
   padding: 0 var(--space-4);
 }
 section { padding: var(--space-12) 0; }
+
+/* ===== HEADER ===== */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--color-primary);
+  color: white;
+}
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+}
+.site-header__logo {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--radius-full);
+  background: white;
+}
+.site-header__phone { color: white; margin-left: auto; text-decoration: none; }
+.lang-toggle {
+  background: transparent;
+  border: 1px solid white;
+  color: white;
+  border-radius: var(--radius-full);
+  padding: var(--space-2) var(--space-3);
+  cursor: pointer;
+}
+
+/* ===== BUTTONS ===== */
+.button {
+  display: inline-block;
+  padding: var(--space-3) var(--space-6);
+  border-radius: var(--radius-full);
+  text-decoration: none;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+}
+.button--cta {
+  background: var(--button-cta-bg);
+  color: var(--button-cta-fg);
+}
+.button--cta:hover { background: var(--button-cta-hover-bg); }
+
+/* ===== HERO ===== */
+.hero {
+  background: var(--color-primary);
+  color: white;
+  text-align: center;
+  padding: var(--space-20) 0;
+}
+.hero h1 { font-size: var(--font-size-4xl); margin-bottom: var(--space-4); }
+.hero p { font-size: var(--font-size-lg); margin-bottom: var(--space-6); }
+
+/* ===== CARDS (shared) ===== */
+.course-card, .stat-card, .advantage-card, .team-card, .testimonial-card, .price-card, .faq-item {
+  background: var(--card-bg);
+  border-radius: var(--card-radius);
+  box-shadow: var(--card-shadow);
+  padding: var(--card-padding);
+}
+
+.courses-list, .advantages-list, .team-list, .testimonials-list, .prices-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-6);
+}
+.stats-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4);
+}
+.stat-card { text-align: center; }
+.stat-card__value { display: block; font-size: var(--font-size-2xl); color: var(--color-primary); font-weight: 700; }
+
+.team-card__photo {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--space-3);
+}
+
+.gallery-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-3);
+}
+.gallery__image { border-radius: var(--radius-lg); object-fit: cover; aspect-ratio: 4 / 3; }
+
+.faq-item__question {
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+}
+.faq-item__answer { margin-top: var(--space-3); color: var(--color-muted-foreground); }
+
+/* ===== WHATSAPP FLOAT ===== */
+.whatsapp-float {
+  position: fixed;
+  right: var(--space-4);
+  bottom: var(--space-4);
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: var(--radius-full);
+  background: #25D366;
+  box-shadow: var(--shadow-lg);
+  z-index: 20;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (min-width: 768px) {
+  .courses-list, .advantages-list, .testimonials-list, .prices-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .team-list { grid-template-columns: repeat(3, 1fr); }
+  .stats-list { grid-template-columns: repeat(4, 1fr); }
+  .gallery-list { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (min-width: 1024px) {
+  .courses-list { grid-template-columns: repeat(3, 1fr); }
+  .hero h1 { font-size: var(--font-size-5xl); }
+}
