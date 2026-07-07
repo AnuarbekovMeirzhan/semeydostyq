@@ -72,7 +72,7 @@ export function attachFaqHandlers(document) {
   });
 }
 
-export async function initApp({ document, fetchImpl, storage, navigate }) {
+export async function initApp({ document, fetchImpl, storage, navigate, onRender }) {
   let lang = storage.getItem(LANG_STORAGE_KEY) || 'ru';
 
   async function setLanguage(nextLang) {
@@ -83,6 +83,7 @@ export async function initApp({ document, fetchImpl, storage, navigate }) {
     document.documentElement.lang = nextLang;
     const toggle = document.getElementById('lang-toggle');
     if (toggle) toggle.textContent = nextLang === 'ru' ? 'KK' : 'RU';
+    if (typeof onRender === 'function') onRender();
   }
 
   const toggle = document.getElementById('lang-toggle');
@@ -97,11 +98,94 @@ export async function initApp({ document, fetchImpl, storage, navigate }) {
   attachFaqHandlers(document);
 }
 
+// ---------- Browser-only motion enhancements ----------
+// These are never called from tests (only from the browser bootstrap below),
+// so they can safely rely on window / IntersectionObserver.
+
+function setupScrollHeader(document) {
+  const header = document.getElementById('header');
+  if (!header) return;
+  const onScroll = () => {
+    header.classList.toggle('is-scrolled', window.scrollY > 8);
+  };
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+}
+
+function observeReveals(document, reduceMotion) {
+  const targets = document.querySelectorAll('.reveal, .stagger');
+  const supportsObserver = typeof IntersectionObserver !== 'undefined';
+  if (reduceMotion || !supportsObserver) {
+    targets.forEach((el) => el.classList.add('in-view'));
+    return;
+  }
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+
+  targets.forEach((el) => {
+    if (el.__revealObserved) return;
+    el.__revealObserved = true;
+    observer.observe(el);
+  });
+}
+
+function animateCounts(document, reduceMotion) {
+  const values = document.querySelectorAll('.stat-card__value');
+  const supportsObserver = typeof IntersectionObserver !== 'undefined';
+
+  values.forEach((el) => {
+    if (el.dataset.counted) return;
+    const finalText = el.textContent.trim();
+    const match = finalText.match(/^(\d+)(.*)$/);
+    if (!match) { el.dataset.counted = 'skip'; return; }
+    const target = Number(match[1]);
+    const suffix = match[2];
+
+    if (reduceMotion || !supportsObserver || target === 0) {
+      el.dataset.counted = 'done';
+      return;
+    }
+
+    el.dataset.counted = 'pending';
+    const run = () => {
+      const duration = 1100;
+      const start = performance.now();
+      const tick = (now) => {
+        const p = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(target * eased) + suffix;
+        if (p < 1) requestAnimationFrame(tick);
+        else el.textContent = target + suffix;
+      };
+      requestAnimationFrame(tick);
+    };
+
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) { run(); obs.unobserve(entry.target); }
+      });
+    }, { threshold: 0.5 });
+    observer.observe(el);
+  });
+}
+
 if (typeof window !== 'undefined' && typeof document !== 'undefined') {
+  const reduceMotion = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  setupScrollHeader(document);
   initApp({
     document,
     fetchImpl: window.fetch.bind(window),
     storage: window.localStorage,
     navigate: (url) => { window.location.href = url; },
+    onRender: () => {
+      observeReveals(document, reduceMotion);
+      animateCounts(document, reduceMotion);
+    },
   });
 }
