@@ -30,11 +30,11 @@ export async function initApp({ document, fetchImpl, storage }) {
 
   async function setLanguage(nextLang) {
     lang = nextLang;
-    const data = await loadContent(lang, fetchImpl);
+    const data = await loadContent(nextLang, fetchImpl);
     renderSections(document, data);
-    storage.setItem(LANG_STORAGE_KEY, lang);
+    storage.setItem(LANG_STORAGE_KEY, nextLang);
     const toggle = document.getElementById('lang-toggle');
-    if (toggle) toggle.textContent = lang === 'ru' ? 'KK' : 'RU';
+    if (toggle) toggle.textContent = nextLang === 'ru' ? 'KK' : 'RU';
   }
 
   const toggle = document.getElementById('lang-toggle');
