@@ -11,10 +11,18 @@ function makeFormDom() {
       <input id="lead-phone" name="phone" type="tel">
       <p id="lead-phone-error" hidden></p>
       <select id="lead-direction"><option value="0">ЕНТ — 10 класс</option></select>
+      <input id="lead-consent" name="consent" type="checkbox">
+      <p id="lead-consent-error" hidden></p>
       <button type="submit">Send</button>
     </form>
   `, { url: 'http://localhost/' });
   return dom.window.document;
+}
+
+function fillValidRequiredFields(document) {
+  document.getElementById('lead-name').value = 'Айгуль';
+  document.getElementById('lead-phone').value = '87071911372';
+  document.getElementById('lead-consent').checked = true;
 }
 
 test('attachFormHandler blocks submit and shows errors when fields are empty', () => {
@@ -25,17 +33,42 @@ test('attachFormHandler blocks submit and shows errors when fields are empty', (
   assert.equal(navigated, null);
   assert.equal(document.getElementById('lead-name-error').hidden, false);
   assert.equal(document.getElementById('lead-phone-error').hidden, false);
+  assert.equal(document.getElementById('lead-consent-error').hidden, false);
 });
 
 test('attachFormHandler navigates to a wa.me link when fields are valid', () => {
+  const document = makeFormDom();
+  fillValidRequiredFields(document);
+  let navigated = null;
+  attachFormHandler(document, '77071911372', (url) => { navigated = url; });
+  document.getElementById('lead-form-el').dispatchEvent(new document.defaultView.Event('submit', { cancelable: true }));
+  assert.match(navigated, /^https:\/\/wa\.me\/77071911372\?text=/);
+  assert.match(decodeURIComponent(navigated.split('text=')[1]), /Айгуль/);
+});
+
+test('attachFormHandler blocks submit and shows the consent error when the checkbox is unchecked', () => {
   const document = makeFormDom();
   document.getElementById('lead-name').value = 'Айгуль';
   document.getElementById('lead-phone').value = '87071911372';
   let navigated = null;
   attachFormHandler(document, '77071911372', (url) => { navigated = url; });
   document.getElementById('lead-form-el').dispatchEvent(new document.defaultView.Event('submit', { cancelable: true }));
-  assert.match(navigated, /^https:\/\/wa\.me\/77071911372\?text=/);
-  assert.match(decodeURIComponent(navigated.split('text=')[1]), /Айгуль/);
+  assert.equal(navigated, null);
+  assert.equal(document.getElementById('lead-consent-error').hidden, false);
+});
+
+test('attachFormHandler clears the consent error live once the box is checked', () => {
+  const document = makeFormDom();
+  document.getElementById('lead-name').value = 'Айгуль';
+  document.getElementById('lead-phone').value = '87071911372';
+  attachFormHandler(document, '77071911372', () => {});
+  const consentBox = document.getElementById('lead-consent');
+  const consentError = document.getElementById('lead-consent-error');
+  document.getElementById('lead-form-el').dispatchEvent(new document.defaultView.Event('submit', { cancelable: true }));
+  assert.equal(consentError.hidden, false);
+  consentBox.checked = true;
+  consentBox.dispatchEvent(new document.defaultView.Event('change', { bubbles: true }));
+  assert.equal(consentError.hidden, true);
 });
 
 test('attachFormHandler shows the name error on blur, before any submit attempt', () => {

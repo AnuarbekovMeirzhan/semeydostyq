@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readFileSync, existsSync } from 'node:fs';
 
 const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
 const css = readFileSync(new URL('../css/style.css', import.meta.url), 'utf8');
@@ -41,6 +41,23 @@ test('index.html og:image points to an absolute URL', () => {
 
 test('index.html has a twitter:card meta tag set to summary_large_image', () => {
   assert.match(html, /<meta name=["']twitter:card["'][^>]+content=["']summary_large_image["']/);
+});
+
+test('index.html has a required consent checkbox in the lead form', () => {
+  assert.match(html, /id=["']lead-consent["'][^>]*type=["']checkbox["']/);
+  assert.match(html, /id=["']lead-consent-error["']/);
+});
+
+test('index.html consent checkbox links to privacy.html', () => {
+  assert.match(html, /href=["']privacy\.html["']/);
+});
+
+test('privacy.html exists and describes how form data is handled', () => {
+  const privacyPath = new URL('../privacy.html', import.meta.url);
+  assert.ok(existsSync(privacyPath), 'privacy.html should exist next to index.html');
+  const privacyHtml = readFileSync(privacyPath, 'utf8');
+  assert.match(privacyHtml, /WhatsApp/);
+  assert.match(privacyHtml, /77071911372/);
 });
 
 const requiredTokens = [

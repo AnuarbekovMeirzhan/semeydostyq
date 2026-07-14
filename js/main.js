@@ -33,8 +33,10 @@ export function attachFormHandler(document, centerPhoneDigits, navigate) {
   const nameInput = document.getElementById('lead-name');
   const phoneInput = document.getElementById('lead-phone');
   const directionSelect = document.getElementById('lead-direction');
+  const consentInput = document.getElementById('lead-consent');
   const nameError = document.getElementById('lead-name-error');
   const phoneError = document.getElementById('lead-phone-error');
+  const consentError = document.getElementById('lead-consent-error');
 
   const validateName = () => {
     const valid = nameInput.value.trim().length > 0;
@@ -46,6 +48,12 @@ export function attachFormHandler(document, centerPhoneDigits, navigate) {
     const valid = isValidPhone(formatPhoneInput(phoneInput.value));
     phoneError.hidden = valid;
     phoneInput.setAttribute('aria-invalid', String(!valid));
+    return valid;
+  };
+  const validateConsent = () => {
+    const valid = consentInput.checked;
+    consentError.hidden = valid;
+    consentInput.setAttribute('aria-invalid', String(!valid));
     return valid;
   };
 
@@ -60,6 +68,10 @@ export function attachFormHandler(document, centerPhoneDigits, navigate) {
   });
   phoneInput.addEventListener('blur', validatePhone);
 
+  consentInput.addEventListener('change', () => {
+    if (!consentError.hidden) validateConsent();
+  });
+
   form.addEventListener('submit', (event) => {
     event.preventDefault();
 
@@ -67,9 +79,11 @@ export function attachFormHandler(document, centerPhoneDigits, navigate) {
     const phone = formatPhoneInput(phoneInput.value);
     const nameValid = validateName();
     const phoneValid = validatePhone();
+    const consentValid = validateConsent();
 
     if (!nameValid) { nameInput.focus(); return; }
     if (!phoneValid) { phoneInput.focus(); return; }
+    if (!consentValid) { consentInput.focus(); return; }
 
     const direction = directionSelect.options[directionSelect.selectedIndex]?.textContent || '';
     const message = buildLeadMessage({ name, phone, direction });

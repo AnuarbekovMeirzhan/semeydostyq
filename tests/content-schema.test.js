@@ -31,6 +31,13 @@ for (const lang of [['ru', ru], ['kk', kk]]) {
     assert.equal(data.form.directions.length, 6);
   });
 
+  test(`content.${name}.json form has consent fields for the privacy checkbox`, () => {
+    for (const key of ['consentLabel', 'consentLink', 'errorConsent']) {
+      assert.equal(typeof data.form[key], 'string');
+      assert.ok(data.form[key].length > 0, `form.${key} should not be empty`);
+    }
+  });
+
   test(`content.${name}.json marks placeholder sections`, () => {
     for (const section of ['stats', 'team', 'gallery', 'testimonials', 'prices']) {
       assert.equal(data[section]._placeholder, true, `${section} should be marked _placeholder`);

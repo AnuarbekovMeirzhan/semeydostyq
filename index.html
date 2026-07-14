@@ -210,6 +210,15 @@
             <label class="field__label" data-i18n="form.directionLabel" for="lead-direction"></label>
             <select id="lead-direction" class="field__input field__select" name="direction"></select>
           </div>
+          <div class="field field--checkbox">
+            <label class="checkbox-label" for="lead-consent">
+              <input id="lead-consent" class="checkbox-input" name="consent" type="checkbox" required>
+              <span>
+                <span data-i18n="form.consentLabel"></span><a href="privacy.html" target="_blank" rel="noopener" data-i18n="form.consentLink"></a><span data-i18n="form.consentSuffix"></span>
+              </span>
+            </label>
+            <p id="lead-consent-error" class="form-error" hidden data-i18n="form.errorConsent"></p>
+          </div>
           <button type="submit" class="button button--cta button--lg button--block" data-i18n="form.submit"></button>
           <p class="lead-form__hint" data-i18n="form.hint"></p>
         </form>
