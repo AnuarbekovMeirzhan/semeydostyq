@@ -36,22 +36,40 @@ export function attachFormHandler(document, centerPhoneDigits, navigate) {
   const nameError = document.getElementById('lead-name-error');
   const phoneError = document.getElementById('lead-phone-error');
 
+  const validateName = () => {
+    const valid = nameInput.value.trim().length > 0;
+    nameError.hidden = valid;
+    nameInput.setAttribute('aria-invalid', String(!valid));
+    return valid;
+  };
+  const validatePhone = () => {
+    const valid = isValidPhone(formatPhoneInput(phoneInput.value));
+    phoneError.hidden = valid;
+    phoneInput.setAttribute('aria-invalid', String(!valid));
+    return valid;
+  };
+
+  nameInput.addEventListener('blur', validateName);
+  nameInput.addEventListener('input', () => {
+    if (!nameError.hidden) validateName();
+  });
+
   phoneInput.addEventListener('input', () => {
     phoneInput.value = formatPhoneInput(phoneInput.value);
+    if (!phoneError.hidden) validatePhone();
   });
+  phoneInput.addEventListener('blur', validatePhone);
 
   form.addEventListener('submit', (event) => {
     event.preventDefault();
 
     const name = nameInput.value.trim();
     const phone = formatPhoneInput(phoneInput.value);
-    const nameValid = name.length > 0;
-    const phoneValid = isValidPhone(phone);
+    const nameValid = validateName();
+    const phoneValid = validatePhone();
 
-    nameError.hidden = nameValid;
-    phoneError.hidden = phoneValid;
-
-    if (!nameValid || !phoneValid) return;
+    if (!nameValid) { nameInput.focus(); return; }
+    if (!phoneValid) { phoneInput.focus(); return; }
 
     const direction = directionSelect.options[directionSelect.selectedIndex]?.textContent || '';
     const message = buildLeadMessage({ name, phone, direction });

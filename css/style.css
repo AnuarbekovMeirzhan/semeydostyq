@@ -18,6 +18,7 @@
   --gold-400: #E6C57E;
   --gold-500: #D4A24E;
   --gold-600: #B7842F;
+  --gold-700: #8A6423; /* WCAG AA text-safe gold (5.3:1 on white) — use for gold text on light surfaces */
 
   --ivory:     #FBF7F0;
   --ivory-100: #F4ECDE;
@@ -106,7 +107,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--gold-600);
+  color: var(--gold-700);
   margin-bottom: var(--space-4);
 }
 .section--dark .eyebrow, .section--form .eyebrow { color: var(--gold-400); }
@@ -408,7 +409,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--gold-600);
+  color: var(--gold-700);
   background: var(--ivory-100);
   padding: 0.3rem 0.7rem;
   border-radius: var(--radius-full);
@@ -471,7 +472,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   font-family: var(--font-display);
   font-size: 1.1rem;
   font-weight: 700;
-  color: var(--gold-600);
+  color: var(--gold-700);
   letter-spacing: 0.05em;
 }
 .process-step__title { margin-top: var(--space-2); font-size: 1.2rem; color: var(--plum-800); }
@@ -495,7 +496,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   background: var(--ivory-100);
 }
 .team-card__name { font-size: 1.15rem; color: var(--plum-800); }
-.team-card__subject { margin-top: var(--space-2); font-weight: 600; color: var(--gold-600); font-size: 0.9rem; }
+.team-card__subject { margin-top: var(--space-2); font-weight: 600; color: var(--gold-700); font-size: 0.9rem; }
 .team-card__experience { margin-top: var(--space-2); font-size: 0.85rem; color: var(--color-muted-foreground); }
 @media (hover: hover) and (pointer: fine) {
   .team-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
@@ -650,6 +651,8 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   box-shadow: 0 0 0 3px rgb(212 162 78 / 0.25);
   background: rgb(27 6 34 / 0.6);
 }
+.field__input[aria-invalid="true"] { border-color: #FF9AA0; }
+.field__input[aria-invalid="true"]:focus { box-shadow: 0 0 0 3px rgb(255 154 160 / 0.25); }
 .field__select {
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23D4A24E' d='M6 8 0 0h12z'/%3E%3C/svg%3E");

@@ -38,6 +38,37 @@ test('attachFormHandler navigates to a wa.me link when fields are valid', () => 
   assert.match(decodeURIComponent(navigated.split('text=')[1]), /Айгуль/);
 });
 
+test('attachFormHandler shows the name error on blur, before any submit attempt', () => {
+  const document = makeFormDom();
+  attachFormHandler(document, '77071911372', () => {});
+  const nameInput = document.getElementById('lead-name');
+  nameInput.value = '';
+  nameInput.dispatchEvent(new document.defaultView.Event('blur', { bubbles: true }));
+  assert.equal(document.getElementById('lead-name-error').hidden, false);
+});
+
+test('attachFormHandler keeps the phone error hidden on blur when the phone is valid', () => {
+  const document = makeFormDom();
+  attachFormHandler(document, '77071911372', () => {});
+  const phoneInput = document.getElementById('lead-phone');
+  phoneInput.value = '87071911372';
+  phoneInput.dispatchEvent(new document.defaultView.Event('input', { bubbles: true }));
+  phoneInput.dispatchEvent(new document.defaultView.Event('blur', { bubbles: true }));
+  assert.equal(document.getElementById('lead-phone-error').hidden, true);
+});
+
+test('attachFormHandler clears a shown error live once the field becomes valid', () => {
+  const document = makeFormDom();
+  attachFormHandler(document, '77071911372', () => {});
+  const nameInput = document.getElementById('lead-name');
+  const nameError = document.getElementById('lead-name-error');
+  nameInput.dispatchEvent(new document.defaultView.Event('blur', { bubbles: true }));
+  assert.equal(nameError.hidden, false);
+  nameInput.value = 'Айгуль';
+  nameInput.dispatchEvent(new document.defaultView.Event('input', { bubbles: true }));
+  assert.equal(nameError.hidden, true);
+});
+
 test('attachFaqHandlers toggles the answer visibility and aria-expanded on click', () => {
   const dom = new JSDOM(`
     <div id="faq-list">
