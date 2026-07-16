@@ -102,6 +102,36 @@ test('attachFormHandler clears a shown error live once the field becomes valid',
   assert.equal(nameError.hidden, true);
 });
 
+test('attachFormHandler reports the lead_submitted goal to Yandex.Metrika on a valid submit', () => {
+  const document = makeFormDom();
+  fillValidRequiredFields(document);
+  const calls = [];
+  document.defaultView.ym = (...args) => calls.push(args);
+  attachFormHandler(document, '77071911372', () => {});
+  document.getElementById('lead-form-el').dispatchEvent(new document.defaultView.Event('submit', { cancelable: true }));
+  assert.deepEqual(calls, [[110793751, 'reachGoal', 'lead_submitted']]);
+});
+
+test('attachFormHandler does not report a goal when the form is invalid', () => {
+  const document = makeFormDom();
+  const calls = [];
+  document.defaultView.ym = (...args) => calls.push(args);
+  attachFormHandler(document, '77071911372', () => {});
+  document.getElementById('lead-form-el').dispatchEvent(new document.defaultView.Event('submit', { cancelable: true }));
+  assert.deepEqual(calls, []);
+});
+
+test('attachFormHandler submits fine when window.ym is not defined (blocked tracker)', () => {
+  const document = makeFormDom();
+  fillValidRequiredFields(document);
+  let navigated = null;
+  attachFormHandler(document, '77071911372', (url) => { navigated = url; });
+  assert.doesNotThrow(() => {
+    document.getElementById('lead-form-el').dispatchEvent(new document.defaultView.Event('submit', { cancelable: true }));
+  });
+  assert.match(navigated, /^https:\/\/wa\.me\//);
+});
+
 test('attachFaqHandlers toggles the answer visibility and aria-expanded on click', () => {
   const dom = new JSDOM(`
     <div id="faq-list">

@@ -52,6 +52,11 @@ test('index.html consent checkbox links to privacy.html', () => {
   assert.match(html, /href=["']privacy\.html["']/);
 });
 
+test('index.html loads the Yandex.Metrika counter with the correct id', () => {
+  assert.match(html, /mc\.yandex\.ru\/metrika\/tag\.js\?id=110793751/);
+  assert.match(html, /ym\(110793751,\s*'init'/);
+});
+
 test('privacy.html exists and describes how form data is handled', () => {
   const privacyPath = new URL('../privacy.html', import.meta.url);
   assert.ok(existsSync(privacyPath), 'privacy.html should exist next to index.html');

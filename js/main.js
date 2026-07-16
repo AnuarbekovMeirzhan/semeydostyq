@@ -8,6 +8,8 @@ import { formatPhoneInput, isValidPhone, buildLeadMessage, buildWhatsAppLink } f
 
 const LANG_STORAGE_KEY = 'dostyq-lang';
 const CENTER_PHONE_DIGITS = '77071911372';
+const METRIKA_COUNTER_ID = 110793751;
+const METRIKA_LEAD_GOAL = 'lead_submitted';
 
 export function renderSections(document, data) {
   applyTranslations(document, data);
@@ -87,6 +89,12 @@ export function attachFormHandler(document, centerPhoneDigits, navigate) {
 
     const direction = directionSelect.options[directionSelect.selectedIndex]?.textContent || '';
     const message = buildLeadMessage({ name, phone, direction });
+
+    const win = document.defaultView;
+    if (win && typeof win.ym === 'function') {
+      win.ym(METRIKA_COUNTER_ID, 'reachGoal', METRIKA_LEAD_GOAL);
+    }
+
     navigate(buildWhatsAppLink(centerPhoneDigits, message));
   });
 }
